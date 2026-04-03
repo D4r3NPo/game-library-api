@@ -2,13 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
-public class GamesController: ControllerBase
+public class GamesController : ControllerBase
 {
-    readonly Dictionary<string, Game> games = new Dictionary<string, Game>
-    {
-        {"doom", new Game("doom","Doom","MacOS")},
-        {"factorio", new Game("factorio","Factorio","Linux")},
-        {"wakfu", new Game("wakfu","Wakfu","Windows")},
+    // TODO replace by database
+    readonly Dictionary<string, Game> games = new() {
+        {"doom", new Game("doom","Doom", [Platform.Linux, Platform.Windows], [Genre.Multiplayer, Genre.FPS], Status.ToDo, null)},
+        {"factorio", new Game("factorio","Factorio", [Platform.MacOS, Platform.Linux, Platform.Windows], [Genre.Factory, Genre.Multiplayer], Status.Done, 7)},
     };
 
     [HttpGet]
@@ -17,5 +16,9 @@ public class GamesController: ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetById(string id) => games.TryGetValue(id, out var game) ? Ok(game) : NotFound();
 
-    public record Game(string Id, string Title, string Platform);
+    [HttpPost]
+    public IActionResult Create([FromBody] Game game)
+    {
+        return CreatedAtAction(nameof(GetById), new { id = game.Id }, game);
+    }
 }
