@@ -1,4 +1,6 @@
-public record Game(string Id, string Title, Platform[] Platforms, Genre[] Genres, Status Status, int? Rating);
+namespace GameLibrary.Models;
+
+public record Game(string Id, string Title, Platform[] Platforms, Genre[] Genres, Status Status = Status.ToDo, int? Rating = null);
 
 public enum Platform
 {
@@ -16,7 +18,8 @@ public enum Status
     Done
 }
 
-public enum Genre {
+public enum Genre
+{
     RPG,
     Factory,
     Sandbox,
