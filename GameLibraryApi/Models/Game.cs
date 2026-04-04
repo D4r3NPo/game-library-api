@@ -5,7 +5,7 @@ public class Game
 {
     [Required]
     public string Id { get; init; } = "";
-    [Required]
+    [Required, Length(1, 30)]
     public string Title { get; set; } = "";
     public Platform[] Platforms { get; set; } = [];
     public Genre[] Genres { get; set; } = [];
