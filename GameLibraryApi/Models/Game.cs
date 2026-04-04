@@ -1,12 +1,16 @@
 namespace GameLibraryApi.Models;
+using System.ComponentModel.DataAnnotations;
 
 public class Game
 {
+    [Required]
     public string Id { get; init; } = "";
+    [Required]
     public string Title { get; set; } = "";
     public Platform[] Platforms { get; set; } = [];
     public Genre[] Genres { get; set; } = [];
     public Status Status { get; set; } = Status.ToDo;
+    [Range(0, 10)]
     public int? Rating { get; set; } = null;
 
     public override bool Equals(object? obj)
