@@ -8,6 +8,19 @@ public class Game
     public Genre[] Genres { get; set; } = [];
     public Status Status { get; set; } = Status.ToDo;
     public int? Rating { get; set; } = null;
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Game game &&
+            Id == game.Id &&
+            Title == game.Title &&
+            Platforms.SequenceEqual(game.Platforms) &&
+            Genres.SequenceEqual(game.Genres) &&
+            Status == game.Status &&
+            Rating == game.Rating;
+    }
+
+    public override int GetHashCode() => HashCode.Combine(Id, Title, Platforms, Genres, Status, Rating);
 }
 
 public enum Platform
