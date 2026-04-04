@@ -1,6 +1,14 @@
 namespace GameLibrary.Models;
 
-public record Game(string Id, string Title, Platform[] Platforms, Genre[] Genres, Status Status = Status.ToDo, int? Rating = null);
+public class Game
+{
+    public string Id { get; init; } = "";
+    public string Title { get; set; } = "";
+    public Platform[] Platforms { get; set; } = [];
+    public Genre[] Genres { get; set; } = [];
+    public Status Status { get; set; } = Status.ToDo;
+    public int? Rating { get; set; } = null;
+}
 
 public enum Platform
 {
