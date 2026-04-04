@@ -74,5 +74,40 @@ public class GamesApiTests(CustomWebApplicationFactory factory) : IClassFixture<
         Assert.Equal(2, retrievedUpdatedGame.Rating);
     }
 
-        
+    [Fact]
+    public async Task Create_With_Invalid_Title_Returns_BadRequest()
+    {
+        var game = new Game
+        {
+            Id = "",
+            Title = "",
+            Platforms = [],
+            Genres = [],
+            Status = Status.ToDo,
+            Rating = 5
+        };
+
+        var response = await _client.PostAsJsonAsync("/api/games", game);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Create_With_Invalid_Rating_Returns_BadRequest()
+    {
+        var game = new Game
+        {
+            Id = "game-name",
+            Title = "Invalid Game",
+            Platforms = [],
+            Genres = [],
+            Status = Status.ToDo,
+            Rating = 15
+        };
+
+        var response = await _client.PostAsJsonAsync("/api/games", game);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
 }
