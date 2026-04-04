@@ -66,7 +66,7 @@ public class GamesController(AppDbContext db) : ControllerBase
 
         await db.SaveChangesAsync();
 
-        return Ok();
+        return Ok(new GameResponseDto(existingGame));
     }
 
     [HttpDelete("{id}")]
