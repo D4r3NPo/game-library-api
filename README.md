@@ -56,7 +56,7 @@ This project lets you create, read, update, and delete games, with filtering, se
 
 ## Validation Rules
 
-- `Title` is required
+- `Title` is required with length limited to 30
 - `Rating` must be between `0` and `10`
 
 ---

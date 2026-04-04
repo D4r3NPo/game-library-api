@@ -1,4 +1,5 @@
 using GameLibraryApi.Data;
+using GameLibraryApi.DTOs;
 using GameLibraryApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,18 +11,27 @@ namespace GameLibraryApi.Controllers;
 public class GamesController(AppDbContext db) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] Game game)
+    public async Task<IActionResult> Create([FromBody] CreateGameDto dto)
     {
-        db.Games.Add(game);
+        var newGame = new Game
+        {
+            Id = Guid.NewGuid().ToString(),
+            Title = dto.Title,
+            Platforms = dto.Platforms,
+            Genres = dto.Genres,
+            Status = dto.Status,
+            Rating = dto.Rating,
+        };
+        db.Games.Add(newGame);
         await db.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetById), new { id = game.Id }, game);
+        return CreatedAtAction(nameof(GetById), new { id = newGame.Id }, new GameResponseDto(newGame));
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(string id)
     {
         var game = await db.Games.FindAsync(id);
-        return game is null ? NotFound() : Ok(game);
+        return game is null ? NotFound() : Ok(new GameResponseDto(game));
     }
 
     [HttpGet]
@@ -38,23 +48,21 @@ public class GamesController(AppDbContext db) : ControllerBase
         if (!string.IsNullOrWhiteSpace(title))
             query = query.Where(g => g.Title.Contains(title));
 
-        var games = await query.ToListAsync();
+        List<GameResponseDto> games = await query.Select(g => new GameResponseDto(g)).ToListAsync();
         return Ok(games);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(string id, [FromBody] Game updatedGame)
+    public async Task<IActionResult> Update(string id, [FromBody] UpdateGameDto dto)
     {
-        if (updatedGame.Id != id) return BadRequest("'id' in URL do not match 'id' in provided data");
-
         Game? existingGame = await db.Games.FindAsync(id);
         if (existingGame is null) return NotFound();
 
-        existingGame.Title = updatedGame.Title;
-        existingGame.Platforms = updatedGame.Platforms;
-        existingGame.Genres = updatedGame.Genres;
-        existingGame.Status = updatedGame.Status;
-        existingGame.Rating =  updatedGame.Rating;
+        existingGame.Title = dto.Title;
+        existingGame.Platforms = dto.Platforms;
+        existingGame.Genres = dto.Genres;
+        existingGame.Status = dto.Status;
+        existingGame.Rating =  dto.Rating;
 
         await db.SaveChangesAsync();
 
