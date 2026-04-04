@@ -97,7 +97,7 @@ public class GamesApiTests
         var getUpdatedGameResponse = await client.GetAsync($"/api/games/{createdGame.Id}");
         Assert.Equal(HttpStatusCode.OK, getUpdatedGameResponse.StatusCode);
 
-        var retrievedUpdatedGame = await getUpdatedGameResponse.Content.ReadFromJsonAsync<Game>();
+        var retrievedUpdatedGame = await getUpdatedGameResponse.Content.ReadFromJsonAsync<GameResponseDto>();
 
         Assert.NotNull(retrievedUpdatedGame);
         Assert.Equal(2, retrievedUpdatedGame.Rating);
@@ -184,6 +184,91 @@ public class GamesApiTests
         games = await response.Content.ReadFromJsonAsync<List<GameResponseDto>>();
         Assert.NotNull(games);
         Assert.Equal(2, games.Count);
+
+        response = await client.GetAsync("/api/games?title=Game");
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        games = await response.Content.ReadFromJsonAsync<List<GameResponseDto>>();
+        Assert.NotNull(games);
+        Assert.Equal(2, games.Count);
+    }
+
+    [Fact]
+    public async Task Delete_Works()
+    {
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+
+        var game1 = new CreateGameDto
+        {
+            Title = "Game 1",
+            Platforms = [Platform.Windows],
+            Genres = [Genre.RPG],
+            Status = Status.ToDo,
+            Rating = 5
+        };
+
+        var game2 = new CreateGameDto
+        {
+            Title = "Game 2",
+            Platforms = [Platform.Linux, Platform.Windows],
+            Genres = [Genre.FPS],
+            Status = Status.InProgress,
+            Rating = 7
+        };
+
+        await client.PostAsJsonAsync("/api/games", game1);
+        var postResponse = await client.PostAsJsonAsync("/api/games", game2);
+        var game2Id = (await postResponse.Content.ReadFromJsonAsync<GameResponseDto>())?.Id;
+        Assert.NotNull(game2Id);
+
+        var gameCountBefore = await GetGameCount();
+        Assert.Equal(2, gameCountBefore);
+
+        var deleteResponse = await client.DeleteAsync($"/api/games/{game2Id}");
+        Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
+
+        var gameCountAfter = await GetGameCount();
+        Assert.Equal(2, gameCountBefore);
+
+        async Task<int> GetGameCount()
+        {
+            var response = await client.GetAsync("/api/games");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var games = await response.Content.ReadFromJsonAsync<List<GameResponseDto>>();
+            Assert.NotNull(games);
+            return games.Count;
+        }
+    }
+
+
+    [Fact]
+    public async Task Update_Invalid_Id_Fails()
+    {
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+
+         var updatedGame = new UpdateGameDto
+        {
+            Title = "Celeste",
+            Platforms = [],
+            Genres = [],
+            Status = Status.ToDo,
+            Rating = 2
+        };
+
+        var updateResponse = await client.PutAsJsonAsync($"/api/games/invalid-id", updatedGame);
+        Assert.Equal(HttpStatusCode.NotFound, updateResponse.StatusCode);
+    }
+
+    [Fact]
+    public async Task Delete_Invalid_Id_Fails()
+    {
+        using var factory = CreateFactory();
+        using var client = factory.CreateClient();
+
+        var deleteResponse = await client.DeleteAsync($"/api/games/invalid-id");
+        Assert.Equal(HttpStatusCode.NotFound, deleteResponse.StatusCode);
     }
 
 }
