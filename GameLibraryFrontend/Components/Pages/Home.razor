@@ -1,7 +1,24 @@
 ﻿@page "/"
-
+@using GameLibrary.Shared.DTOs
+@inject GameLibraryFrontend.Services.GameClient GameClient
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
-
 Welcome to your new app.
+
+<h2>Game List</h2>
+<ul>
+@foreach(var game in games){
+    <li>@game</li>
+}
+</ul>
+
+@code {
+    private List<GameResponseDto> games = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        games = (await GameClient.GetGamesAsync()) ?? [];
+    }
+}
+

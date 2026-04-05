@@ -7,7 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped<GameClient>();
+builder.Services.AddHttpClient<GameClient>((sp, http) =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var baseUrl = config["ApiBaseUrl"] ?? throw new InvalidOperationException("Missing configuration: ApiBaseUrl");
+    http.BaseAddress = new Uri(baseUrl);
+});
 
 var app = builder.Build();
 
