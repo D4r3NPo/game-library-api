@@ -41,7 +41,9 @@
 <ul>
 @foreach(var game in games)
 {
-    <li>@game.Title | @game.Status | @game.Rating</li>
+    <li @key="game.Id">@game.Title | @game.Status | @game.Rating 
+        <button @onclick="async () => { await DeleteGame(game.Id); }">Delete</button>
+    </li>
 }
 </ul>
 
@@ -67,6 +69,14 @@
         }
         catch {
 
+        }
+    }
+
+    private async Task DeleteGame(string gameId) {
+        try {
+            await GameClient.DeleteAsync(gameId);
+            await UpdateGameList();
+        } catch {
         }
     }
 
