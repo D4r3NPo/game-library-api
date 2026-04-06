@@ -6,23 +6,38 @@
 
 <PageTitle>Home</PageTitle>
 
-<h2>Game List</h2>
-<section>
-    <div style="color: red;">
-        @if(requestError is not null){
-            <span>@requestError</span>
+<h2>Add Form</h2>
+<EditForm Model="model" OnValidSubmit="SendRequest">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText @bind-Value="model.Title" />
+    <InputSelect @bind-Value="model.Status">
+        @foreach (var status in Enum.GetValues<GameStatus>())
+        {
+            <option value="@status">@status</option>
+        }
+    </InputSelect>
+    <InputNumber @bind-Value="model.Rating" />
+    <div>
+        <label>Platforms</label>
+        @foreach (var platform in Enum.GetValues<GamePlatform>())
+        {
+            <label>
+                <input type="checkbox"
+                       checked="@selectedPlatforms.Contains(platform)"
+                       @onchange="e => TogglePlatform(platform, (bool)e.Value!)" />
+                @platform
+            </label>
         }
     </div>
-    <input @bind="request.Title" />
-    <select @bind="request.Status">
-        <option value="@GameStatus.ToDo">ToDo</option>
-        <option value="@GameStatus.InProgress">InProgress</option>
-        <option value="@GameStatus.Done">Done</option>
-    </select>
-    <input type="number" @bind="request.Rating" />
-    <button @onclick="SendRequest">Add</button>
-</section>
+    
 
+    <button type="submit">Add</button>
+</EditForm>
+
+
+<h2>Game List</h2>
 <ul>
 @foreach(var game in games)
 {
@@ -33,21 +48,37 @@
 @code {
     private List<GameResponseDto> games = [];
 
-    private CreateGameDto request = new();
-    private string? requestError = null; 
+    private CreateGameDto model = new();
+    private List<GamePlatform> selectedPlatforms = [];
 
     protected override async Task OnInitializedAsync()
     {
-        games = (await GameClient.GetGamesAsync()) ?? [];
+        await UpdateGameList();
     }
 
+    private async Task UpdateGameList() {
+        games = (await GameClient.GetGamesAsync()) ?? [];
+    }
     private async Task SendRequest() {
-        var result = await GameClient.CreateGameAsync(request);
-        if (result is null) {
-            requestError = "Game creation request is invalid";
+        try {
+            model.Platforms = selectedPlatforms.ToArray();
+            var result = await GameClient.CreateGameAsync(model);
+            await UpdateGameList();
         }
-        else {
-            requestError = null;
+        catch {
+
+        }
+    }
+
+    private void TogglePlatform(GamePlatform platform, bool isChecked)
+    {
+        if (isChecked)
+        {
+            if (!selectedPlatforms.Contains(platform)) selectedPlatforms.Add(platform);
+        }
+        else
+        {
+            selectedPlatforms.Remove(platform);
         }
     }
 }
