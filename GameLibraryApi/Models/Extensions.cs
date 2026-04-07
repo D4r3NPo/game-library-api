@@ -2,7 +2,7 @@ using GameLibrary.Shared.DTOs;
 
 namespace GameLibraryApi.Models
 {
-    public static class Extension
+    public static class Extensions
     {
         public static GameResponseDto ToGameResponseDto(this Game game) => new()
         {
