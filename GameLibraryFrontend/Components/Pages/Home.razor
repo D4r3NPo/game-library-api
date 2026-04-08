@@ -49,18 +49,13 @@
 
 @code {
     private List<GameResponseDto> games = [];
-
     private CreateGameDto model = new();
+    private string? editingGameId = null;
     private List<GamePlatform> selectedPlatforms = [];
 
-    protected override async Task OnInitializedAsync()
-    {
-        await UpdateGameList();
-    }
+    protected override async Task OnInitializedAsync() => await UpdateGameList();
 
-    private async Task UpdateGameList() {
-        games = (await GameClient.GetGamesAsync()) ?? [];
-    }
+    private async Task UpdateGameList() => games = (await GameClient.GetGamesAsync()) ?? [];
     private async Task SendRequest() {
         try {
             model.Platforms = selectedPlatforms.ToArray();
@@ -70,6 +65,15 @@
         catch {
 
         }
+    }
+
+    private async Task Update() {
+        try {
+            if (editingGameId is null) return;
+            var editedGame = games.Find(g => g.Id == editingGameId);
+            if (editedGame is null) return;
+            await GameClient.UpdateAsync(editingGameId, editedGame.ToUpdateGameDto());
+        } catch{}
     }
 
     private async Task DeleteGame(string gameId) {
