@@ -4,6 +4,8 @@ Full-stack ASP.NET project for managing a personal game library.
 
 The solution includes a Web API, a Blazor frontend, shared DTOs/enums, and API integration tests. It lets you create, read, update, and delete games, then view and edit them from the UI.
 
+![Game Library screenshot](showcase/Screenshot.png)
+
 ## Projects
 
 - `GameLibraryApi`: ASP.NET Core Web API with Entity Framework Core and SQLite
