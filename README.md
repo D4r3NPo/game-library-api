@@ -87,3 +87,7 @@ dotnet run --project GameLibraryFrontend
 ```bash
 dotnet test GameLibraryApi.sln
 ```
+
+## Current Limitations
+
+- Frontend error handling is still minimal and needs more user feedback for failed API requests.
