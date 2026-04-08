@@ -1,0 +1,34 @@
+@page "/statistics"
+@rendermode InteractiveServer
+@using GameLibrary.Shared.DTOs
+@using GameLibrary.Shared.Enums
+@inject GameLibraryFrontend.Services.GameClient GameClient
+
+<PageTitle>Statistics</PageTitle>
+
+<ul>
+    @foreach (var statistic in statistics)
+    {
+        <li><span>@statistic.name</span> <span>@statistic.value</span></li>
+    }
+</ul>
+
+@code {
+    private List<(string name, string value)> statistics = [];
+    protected override async Task OnInitializedAsync() => await UpdateStatistics();
+    private async Task UpdateStatistics()
+    {
+        statistics.Clear();
+        List<GameResponse> games = (await GameClient.GetGamesAsync()) ?? [];
+        statistics.Add(("Total", games.Count.ToString()));
+        statistics.Add(("Desktop", (games.Count(IsDesktopGame)).ToString()));
+        statistics.Add(("Mobile", (games.Count(IsMobileGame)).ToString()));
+        statistics.Add(("Completed", (games.Count(g => g.Status == GameStatus.Done)).ToString()));
+    }
+
+    static readonly GamePlatform[] DesktopPlatforms = [GamePlatform.Windows, GamePlatform.MacOS, GamePlatform.Linux];
+    static readonly GamePlatform[] MobilePlatforms = [GamePlatform.iOS, GamePlatform.Android];
+    static bool IsDesktopGame(GameResponse game) => game.Platforms.ContainsAny(DesktopPlatforms);
+    static bool IsMobileGame(GameResponse game) => game.Platforms.ContainsAny(DesktopPlatforms);
+}
+

@@ -1,0 +1,55 @@
+ li {
+     list-style: none;
+     display: grid;
+     width: 100%;
+     grid-template-columns: 3fr 1fr 1fr 15rem 5rem;
+     grid-auto-rows: 3rem;
+     grid-gap: 0.5rem;
+     text-align: center;
+     place-items: center;
+ }
+
+ #platforms {
+     display: flex;
+     flex-direction: row;
+     gap: 0.3rem;
+     align-items: center;
+     justify-content: center;
+ }
+
+ li:nth-child(odd) {
+     background-color: rgb(40, 40, 40);
+ }
+
+ li:first-child {
+     border-radius: 1rem 1rem 0 0;
+ }
+
+ li:last-child {
+     border-radius: 0 0 1rem 1rem;
+ }
+
+
+ button {
+     background-color: transparent;
+     border: none;
+ }
+
+ button.delete svg {
+     fill: rgb(255, 60, 60);
+ }
+
+ button.edit svg {
+     fill: orange;
+ }
+
+ button.edit,
+ button.delete {
+     width: min(45%, 4rem);
+     height: auto;
+ }
+
+ button.delete svg:hover,
+ button.edit svg:hover {
+     fill: white
+ }

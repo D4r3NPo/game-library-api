@@ -1,0 +1,77 @@
+﻿@page "/list"
+@rendermode InteractiveServer
+@using GameLibrary.Shared.DTOs
+@using GameLibrary.Shared.Enums
+@using GameLibraryFrontend.Components.List
+@inject GameLibraryFrontend.Services.GameClient GameClient
+
+<PageTitle>List</PageTitle>
+
+<GameEditForm Model="createGameRequest" SelectedPlatforms="selectedPlatforms" OnValidSubmit="SendRequest" />
+
+<ul>
+    @foreach (var game in games)
+    {
+        <GameItem Game="game" EditAction="() => { StartEdit(game); }" DeleteAction="async () => await DeleteGame(game)" />
+    }
+</ul>
+
+
+@code {
+    private CreateGameRequest createGameRequest = new();
+    private List<GameResponse> games = [];
+    private (string id, UpdateGameRequest updatedGame)? editingGame = null;
+    private List<GamePlatform> selectedPlatforms = [];
+    protected override async Task OnInitializedAsync() => await UpdateGameList();
+    private async Task UpdateGameList() => games = (await GameClient.GetGamesAsync()) ?? [];
+    private async Task SendRequest()
+    {
+        try
+        {
+            createGameRequest.Platforms = selectedPlatforms.ToArray();
+            var result = await GameClient.CreateGameAsync(createGameRequest);
+            await UpdateGameList();
+        }
+        catch
+        {
+
+        }
+    }
+
+    private async Task Update()
+    {
+        try
+        {
+            if (editingGame.HasValue)
+            {
+                await GameClient.UpdateAsync(editingGame.Value.id, editingGame.Value.updatedGame);
+            }
+        }
+        catch { }
+    }
+
+    private async Task DeleteGame(GameResponse game)
+    {
+        try
+        {
+            await GameClient.DeleteAsync(game.Id);
+            await UpdateGameList();
+        }
+        catch
+        {
+        }
+    }
+
+    private void StartEdit(GameResponse game)
+    {
+        Console.WriteLine("StartEdit");
+        Console.WriteLine(editingGame);
+        editingGame = (game.Id, game.ToUpdateGameRequest());
+        Console.WriteLine(editingGame);
+    }
+    private void CancelEdition()
+    {
+        editingGame = null;
+    }
+}
+

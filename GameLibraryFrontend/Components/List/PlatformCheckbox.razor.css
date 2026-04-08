@@ -1,0 +1,13 @@
+.platform-checkbox {
+    width: min(15%, 2rem);
+    height: auto;
+    cursor: pointer;
+}
+
+.platform-checkbox.is-checked {
+    opacity: 1;
+}
+
+.platform-checkbox.is-unchecked {
+    opacity: .2;
+}

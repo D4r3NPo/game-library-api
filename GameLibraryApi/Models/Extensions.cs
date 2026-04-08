@@ -9,7 +9,6 @@ namespace GameLibraryApi.Models
             Id = game.Id,
             Title = game.Title,
             Platforms = game.Platforms,
-            Genres = game.Genres,
             Status = game.Status,
             Rating = game.Rating,
         };

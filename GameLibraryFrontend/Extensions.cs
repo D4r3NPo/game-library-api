@@ -4,12 +4,19 @@ namespace GameLibraryFrontend;
 
 public static class Extensions
 {
-    public static UpdateGameRequest ToUpdateGameDto(this GameResponse dto) => new()
+    public static UpdateGameRequest ToUpdateGameRequest(this GameResponse game) => new()
     {
-        Title = dto.Title,
-        Platforms = dto.Platforms,
-        Genres = dto.Genres,
-        Status = dto.Status,
-        Rating = dto.Rating,
+        Title = game.Title,
+        Platforms = game.Platforms,
+        Status = game.Status,
+        Rating = game.Rating,
+    };
+
+    public static GameResponse Clone(this GameResponse game) => new()
+    {
+        Title = game.Title,
+        Platforms = game.Platforms,
+        Status = game.Status,
+        Rating = game.Rating,
     };
 }

@@ -1,0 +1,21 @@
+@using GameLibrary.Shared.Enums
+
+<img src="@IconPath" alt="@($"{Platform} icon")" @onclick="TogglePlatform"
+ class="platform-checkbox @(IsChecked ? "is-checked" : "is-unchecked")" draggable="false">
+
+@code {
+    [Parameter] public bool IsReadOnly { get; set; } = false;
+    [Parameter] public GamePlatform Platform { get; set; }
+    [Parameter] public required List<GamePlatform> SelectedPlatforms { get; set; }
+
+    private string IconPath => $"/icons/{Platform.ToString().ToLower()}.png";
+
+    private bool IsChecked => SelectedPlatforms.Contains(Platform);
+
+    private void TogglePlatform()
+    {
+        if (IsReadOnly) return;
+        if (IsChecked) SelectedPlatforms.Remove(Platform);
+        else SelectedPlatforms.Add(Platform);
+    }
+}

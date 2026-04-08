@@ -1,0 +1,28 @@
+ul {
+    background-color: rgb(40, 40, 40);
+    width: 100%;
+    margin: 1rem;
+    border-radius: 1rem;
+    padding-inline: 0;
+    margin-block: 0;
+    list-style: none;
+}
+
+ul li {
+    padding: 1rem;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+ul li:nth-child(odd) {
+    background-color: rgb(30, 30, 30);
+}
+
+ul li:first-child {
+    border-radius: 1rem 1rem 0 0;
+}
+
+ul li:last-child {
+    border-radius: 0 0 1rem 1rem;
+}

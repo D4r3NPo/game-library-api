@@ -1,6 +1,34 @@
-﻿<div>
-    <nav>
-        <NavLink href="/">Home</NavLink>
-    </nav>
-</div>
+﻿<nav>
+    <NavLink href="/list">List</NavLink>
+    <NavLink href="/statistics">Statistics</NavLink>
+</nav>
 
+<style>
+    nav {
+        background-color: rgb(25, 25, 25);
+        padding: 0.5rem;
+        margin: 1rem;
+        border-radius: 10rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 1rem;
+    }
+
+    nav a {
+        font-weight: 800;
+        padding: 0.5rem 1rem;
+        background-color: transparent;
+        border-radius: 10rem;
+    }
+
+    nav a.active {
+        background-color: #2d2d2d;
+    }
+
+    a,
+    a:visited {
+        color: white;
+        text-decoration: none;
+
+    }
+</style>

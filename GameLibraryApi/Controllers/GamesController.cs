@@ -20,7 +20,6 @@ public class GamesController(AppDbContext db) : ControllerBase
 			Id = Guid.NewGuid().ToString(),
 			Title = dto.Title,
 			Platforms = dto.Platforms,
-			Genres = dto.Genres,
 			Status = dto.Status,
 			Rating = dto.Rating,
 		};
@@ -67,7 +66,6 @@ public class GamesController(AppDbContext db) : ControllerBase
 
 		existingGame.Title = dto.Title;
 		existingGame.Platforms = dto.Platforms;
-		existingGame.Genres = dto.Genres;
 		existingGame.Status = dto.Status;
 		existingGame.Rating = dto.Rating;
 

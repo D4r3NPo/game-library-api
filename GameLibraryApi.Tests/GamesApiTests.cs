@@ -30,7 +30,6 @@ public class GamesApiTests
         {
             Title = "Celeste",
             Platforms = [],
-            Genres = [],
             Status = GameStatus.ToDo,
             Rating = 10
         };
@@ -71,7 +70,6 @@ public class GamesApiTests
         {
             Title = "Celeste",
             Platforms = [],
-            Genres = [],
             Status = GameStatus.ToDo,
             Rating = 10
         };
@@ -86,7 +84,6 @@ public class GamesApiTests
         {
             Title = "Celeste",
             Platforms = [],
-            Genres = [],
             Status = GameStatus.ToDo,
             Rating = 2
         };
@@ -113,7 +110,6 @@ public class GamesApiTests
         {
             Title = "",
             Platforms = [],
-            Genres = [],
             Status = GameStatus.ToDo,
             Rating = 5
         };
@@ -133,7 +129,6 @@ public class GamesApiTests
         {
             Title = "Invalid Game",
             Platforms = [],
-            Genres = [],
             Status = GameStatus.ToDo,
             Rating = 15
         };
@@ -153,7 +148,6 @@ public class GamesApiTests
         {
             Title = "Game 1",
             Platforms = [GamePlatform.Windows],
-            Genres = [GameGenre.RPG],
             Status = GameStatus.ToDo,
             Rating = 5
         };
@@ -162,7 +156,6 @@ public class GamesApiTests
         {
             Title = "Game 2",
             Platforms = [GamePlatform.Linux, GamePlatform.Windows],
-            Genres = [GameGenre.FPS],
             Status = GameStatus.InProgress,
             Rating = 7
         };
@@ -203,7 +196,6 @@ public class GamesApiTests
         {
             Title = "Game 1",
             Platforms = [GamePlatform.Windows],
-            Genres = [GameGenre.RPG],
             Status = GameStatus.ToDo,
             Rating = 5
         };
@@ -212,7 +204,6 @@ public class GamesApiTests
         {
             Title = "Game 2",
             Platforms = [GamePlatform.Linux, GamePlatform.Windows],
-            Genres = [GameGenre.FPS],
             Status = GameStatus.InProgress,
             Rating = 7
         };
@@ -251,9 +242,8 @@ public class GamesApiTests
          var updatedGame = new UpdateGameRequest
         {
             Title = "Celeste",
-            Platforms = [],
-            Genres = [],
-            Status = GameStatus.ToDo,
+             Platforms = [],
+             Status = GameStatus.ToDo,
             Rating = 2
         };
 

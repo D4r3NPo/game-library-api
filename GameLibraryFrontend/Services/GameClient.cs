@@ -6,9 +6,9 @@ public class GameClient(HttpClient http)
 {
     private readonly HttpClient _http = http;
 
-    public async Task<GameResponse?> CreateGameAsync(CreateGameRequest dto)
+    public async Task<GameResponse?> CreateGameAsync(CreateGameRequest request)
     {
-        var response = await _http.PostAsJsonAsync("api/games", dto);
+        var response = await _http.PostAsJsonAsync("api/games", request);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadFromJsonAsync<GameResponse>();
     }
@@ -18,9 +18,9 @@ public class GameClient(HttpClient http)
         return await _http.GetFromJsonAsync<List<GameResponse>>("api/games");
     }
 
-    public async Task<GameResponse?> UpdateAsync(string id, UpdateGameRequest dto)
+    public async Task<GameResponse?> UpdateAsync(string id, UpdateGameRequest request)
     {
-        var response = await _http.PutAsJsonAsync($"api/games/{id}", dto);
+        var response = await _http.PutAsJsonAsync($"api/games/{id}", request);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadFromJsonAsync<GameResponse>();
     }    

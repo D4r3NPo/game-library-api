@@ -1,0 +1,38 @@
+ form #inputs {
+     display: grid;
+     width: 100%;
+     grid-template-columns: 3fr 1fr 1fr 15rem 5rem;
+     grid-auto-rows: 3rem;
+     grid-gap: 0.5rem;
+     place-items: center;
+     background-color: rgb(40, 40, 40);
+     border-radius: 1rem;
+ }
+
+ input {
+     border-radius: 0.5rem;
+     border: none;
+ }
+
+ #platforms {
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     justify-content: center;
+     gap: 0.3rem;
+ }
+
+ .add {
+     fill: greenyellow;
+     width: min(15%, 2rem);
+     height: auto;
+ }
+
+ .add:hover {
+     fill: white
+ }
+
+ button {
+     background-color: transparent;
+     border: none;
+ }
