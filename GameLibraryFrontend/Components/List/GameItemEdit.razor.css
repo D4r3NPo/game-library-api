@@ -1,0 +1,55 @@
+li {
+    list-style: none;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 3rem;
+    grid-gap: 0.5rem;
+    text-align: center;
+    place-items: center;
+}
+
+form {
+    width: 100%;
+}
+
+form #inputs {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 3fr 1fr 1fr 15rem 5rem;
+    grid-auto-rows: 3rem;
+    grid-gap: 0.5rem;
+    place-items: center;
+}
+
+#platforms {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+}
+
+button.validate,
+button.cancel {
+    width: min(45%, 4rem);
+    height: auto;
+}
+
+button.validate svg {
+    fill: greenyellow;
+}
+
+button.cancel svg {
+    fill: rgb(255, 60, 60);
+}
+
+button.validate svg:hover,
+button.cancel svg:hover {
+    fill: white;
+}

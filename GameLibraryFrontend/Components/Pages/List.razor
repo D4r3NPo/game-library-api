@@ -12,7 +12,14 @@
 <ul>
     @foreach (var game in games)
     {
-        <GameItem Game="game" EditAction="() => { StartEdit(game); }" DeleteAction="async () => await DeleteGame(game)" />
+        @if (editingGame.HasValue && editingGame.Value.id == game.Id)
+        {
+            <GameItemEdit Model="editingGame.Value.updatedGame" SelectedPlatforms="editingSelectedPlatforms" ValidateAction="Update" CancelAction="CancelEdition" />
+        }
+        else
+        {
+            <GameItem Game="game" EditAction="@(() => StartEdit(game))" DeleteAction="@(() => DeleteGame(game))" />
+        }
     }
 </ul>
 
@@ -22,6 +29,7 @@
     private List<GameResponse> games = [];
     private (string id, UpdateGameRequest updatedGame)? editingGame = null;
     private List<GamePlatform> selectedPlatforms = [];
+    private List<GamePlatform> editingSelectedPlatforms = [];
     protected override async Task OnInitializedAsync() => await UpdateGameList();
     private async Task UpdateGameList() => games = (await GameClient.GetGamesAsync()) ?? [];
     private async Task SendRequest()
@@ -44,7 +52,11 @@
         {
             if (editingGame.HasValue)
             {
+                editingGame.Value.updatedGame.Platforms = editingSelectedPlatforms.ToArray();
                 await GameClient.UpdateAsync(editingGame.Value.id, editingGame.Value.updatedGame);
+                editingGame = null;
+                editingSelectedPlatforms = [];
+                await UpdateGameList();
             }
         }
         catch { }
@@ -67,11 +79,12 @@
         Console.WriteLine("StartEdit");
         Console.WriteLine(editingGame);
         editingGame = (game.Id, game.ToUpdateGameRequest());
+        editingSelectedPlatforms = game.Platforms.ToList();
         Console.WriteLine(editingGame);
     }
     private void CancelEdition()
     {
         editingGame = null;
+        editingSelectedPlatforms = [];
     }
 }
-

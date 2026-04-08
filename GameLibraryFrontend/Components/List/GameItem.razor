@@ -31,7 +31,7 @@
 @code {
     [Parameter] public required GameResponse Game { get; set; }
 
-    [Parameter] public required Action DeleteAction { get; set; }
+    [Parameter] public required EventCallback DeleteAction { get; set; }
 
-    [Parameter] public required Action EditAction { get; set; }
+    [Parameter] public required EventCallback EditAction { get; set; }
 }
