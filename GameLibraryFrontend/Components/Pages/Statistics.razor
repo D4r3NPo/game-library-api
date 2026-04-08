@@ -29,6 +29,6 @@
     static readonly GamePlatform[] DesktopPlatforms = [GamePlatform.Windows, GamePlatform.MacOS, GamePlatform.Linux];
     static readonly GamePlatform[] MobilePlatforms = [GamePlatform.iOS, GamePlatform.Android];
     static bool IsDesktopGame(GameResponse game) => game.Platforms.ContainsAny(DesktopPlatforms);
-    static bool IsMobileGame(GameResponse game) => game.Platforms.ContainsAny(DesktopPlatforms);
+    static bool IsMobileGame(GameResponse game) => game.Platforms.ContainsAny(MobilePlatforms);
 }
 
